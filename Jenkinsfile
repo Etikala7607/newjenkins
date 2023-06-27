@@ -17,21 +17,28 @@ pipeline {
                 echo 'Deploying.....'
             }
         }
-        stages {
-        // ... define your build stages
-        
-        // Post-build step to push logs to S3
-        post {
-            always {
-                script {
-                    // Set up AWS CLI credentials
-                    withAWS(region: 'us-east-1', credentials: '766480565836') {
-                        // Upload Jenkins log files to S3
-                        sh "aws s3 cp $JENKINS_HOME/jobs/<run>/builds/$BUILD_NUMBER/log s3://jenkins-logzz/"
-                    }
-                }
+       stages {
+        stage('Backup Jenkins Logs') {
+            steps {
+                sh '''
+                    # Set the date and time format
+                    DATE=$(date +'%Y-%m-%d-%H-%M-%S')
+
+                    # Jenkins home directory
+                    JENKINS_HOME="/var/lib/jenkins"
+
+                    # S3 bucket and path
+                    S3_BUCKET="jenkins-logzz"
+                    S3_PATH="jenkins-logs/${DATE}.log"
+
+                    # Path to AWS CLI executable
+                    AWS_CLI="/usr/local/bin/aws"
+
+                    # Backup Jenkins logs to S3
+                    $/usr/local/bin/aws s3 cp "${/var/lib/jenkins}/jenkins.log" "s3://${jenkins-logzz}/${jenkins-logs/${DATE}.log}"
+                '''
             }
         }
-        }
+    }
         }
 }
