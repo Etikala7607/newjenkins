@@ -17,7 +17,7 @@ pipeline {
                 echo 'Deploying.....'
             }
         }
-       stages {
+       
         stage('Backup Jenkins Logs') {
             steps {
                 sh '''
@@ -41,5 +41,5 @@ pipeline {
         }
     }
         }
-}
+
 
