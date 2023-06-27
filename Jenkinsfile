@@ -18,7 +18,7 @@ pipeline {
             }
         }
        
-       stage {
+       stage('push logs') {
         // ... define your build stages
         
         // Post-build step to push logs to S3
